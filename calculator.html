@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculator · Trading Desk</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <nav aria-label="Main navigation">
+    <div class="brand" aria-label="Trading Desk"><span class="logo" aria-hidden="true">↗</span><span class="nav-text">Trading Desk</span></div>
+    <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-controls="navigation-links" aria-expanded="true" aria-label="Collapse navigation" title="Collapse navigation"><span class="toggle-icon" aria-hidden="true">⇤</span><span class="nav-text">Collapse menu</span></button>
+    <div id="navigation-links"><a class="nav-link" href="./index.html" aria-label="Overview" title="Overview"><span class="nav-icon" aria-hidden="true">▦</span><span class="nav-text">Overview</span></a><a class="nav-link" href="./calculator.html" aria-current="page" aria-label="Calculator" title="Calculator"><span class="nav-icon" aria-hidden="true">▤</span><span class="nav-text">Calculator</span></a></div>
+    <span class="mode">Personal workspace</span>
+  </nav>
+  <main>
+    <header><div><div class="eyebrow">Trading Desk</div><h1>Calculator</h1><p>Alege suma și procentul. Rezultatul se actualizează instant.</p></div></header>
+    <div class="calculator-layout">
+      <form class="card calculator-form" id="calculator-form">
+        <h2>Calculează un procent din sumă</h2>
+        <label for="amount">Suma introdusă</label>
+        <input class="amount-input" id="amount" type="number" min="0" max="1000000000000" step="0.01" inputmode="decimal" placeholder="Ex.: 10000" aria-describedby="storage-message" required>
+        <label for="percentage">Procent: <output class="percent-value" id="percentage-label" for="percentage">1%</output></label>
+        <input id="percentage" type="range" min="0" max="100" step="0.1" value="1">
+        <div class="range-labels"><span>0%</span><span>50%</span><span>100%</span></div>
+        <p class="storage-message" id="storage-message" role="status">Suma și procentul se salvează automat în acest browser.</p>
+      </form>
+      <section class="card result-card" aria-labelledby="result-heading">
+        <h2 id="result-heading">Rezultat</h2>
+        <output class="result-value" id="result" for="amount percentage" aria-live="polite" aria-atomic="true">—</output>
+        <p class="formula" id="formula">Introdu o sumă pentru a calcula procentul.</p>
+      </section>
+    </div>
+    <p class="footer">Poți modifica suma oricând. Datele sunt păstrate doar în acest browser.</p>
+  </main>
+  <script src="./sidebar.js"></script>
+  <script src="./calculator.js"></script>
+</body>
+</html>

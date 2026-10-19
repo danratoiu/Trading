@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trading Desk</title>
+  <link rel="stylesheet" href="./styles.css">
+
+</head>
+<body>
+  <nav aria-label="Main navigation">
+    <div class="brand" aria-label="Trading Desk"><span class="logo" aria-hidden="true">↗</span><span class="nav-text">Trading Desk</span></div>
+    <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-controls="navigation-links" aria-expanded="true" aria-label="Collapse navigation" title="Collapse navigation"><span class="toggle-icon" aria-hidden="true">⇤</span><span class="nav-text">Collapse menu</span></button>
+    <div id="navigation-links"><a class="nav-link" href="./index.html" aria-current="page" aria-label="Overview" title="Overview"><span class="nav-icon" aria-hidden="true">▦</span><span class="nav-text">Overview</span></a><a class="nav-link" href="./calculator.html" aria-label="Calculator" title="Calculator"><span class="nav-icon" aria-hidden="true">▤</span><span class="nav-text">Calculator</span></a></div>
+    <span class="mode">Personal workspace</span>
+  </nav>
+  <main>
+    <header><div><div class="eyebrow">Your daily edge</div><h1>A clear mind. A better session.</h1><p>Plan your day, stay focused, and trade with intention.</p></div><div class="date" id="date"></div></header>
+    <section class="stats" aria-label="Trading summary">
+      <div class="card"><div class="label">Today's P&amp;L</div><div class="value">—</div><div class="muted">No trades recorded</div></div>
+      <div class="card"><div class="label">Trades taken</div><div class="value">0</div><div class="muted">A fresh start for your session</div></div>
+      <div class="card"><div class="label">Market connection</div><div class="value" style="font-size:22px;margin-top:20px">Not connected</div><div class="muted">Live market data is not configured</div></div>
+    </section>
+    <div class="grid">
+      <section class="card"><div class="card-top"><div><h2>Session overview</h2><p>Your trading day, at a glance.</p></div><span class="tag">Getting started</span></div><div class="empty"><div class="symbol" aria-hidden="true">⌁</div><h3>Your next session starts here</h3><p>Use your session notes to outline the setups<br>and rules you want to focus on today.</p></div></section>
+      <section class="card notes"><h2>Session notes</h2><p>A little preparation goes a long way.</p><label for="notes">What's your plan for today?</label><textarea id="notes" placeholder="Key levels, setups to watch, and rules to follow…"></textarea><div class="save-row"><button id="save" type="button">Save notes <span aria-hidden="true">↗</span></button><span id="status" role="status" aria-live="polite"></span></div></section>
+    </div>
+    <div class="footer"><span class="dot" aria-hidden="true"></span>Your workspace. One session at a time.</div>
+  </main>
+  <script src="./sidebar.js"></script>
+  <script>
+    document.querySelector('#date').textContent = new Intl.DateTimeFormat(undefined, {weekday:'long',month:'long',day:'numeric'}).format(new Date());
+    const notes = document.querySelector('#notes');
+    const status = document.querySelector('#status');
+    try { notes.value = localStorage.getItem('trading-desk-notes') || ''; } catch { status.textContent = 'Browser storage unavailable'; }
+    notes.addEventListener('input', () => { status.textContent = 'Unsaved changes'; });
+    document.querySelector('#save').addEventListener('click', () => {
+      try { localStorage.setItem('trading-desk-notes', notes.value); status.textContent = 'Saved in this browser'; }
+      catch { status.textContent = 'Could not save in this browser'; }
+    });
+  </script>
+</body>
+</html>
