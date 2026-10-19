@@ -13,3 +13,5 @@ Use Node.js 24 and run `npm start` from this directory. The server listens on po
 In the repository's Settings → Pages, set Source to **GitHub Actions**. The included workflow deploys the static site on pushes to `main` and can also be run manually. No hosting secrets are required. Relative asset and navigation URLs support the `/Trading/` project path.
 
 Expected address after a successful deployment: https://danratoiu.github.io/Trading/
+
+Styles are embedded in both HTML pages so rendering does not depend on fetching a separate CSS file. Edit `styles.css`, then run `npm run build` to sync both pages. The deployment workflow runs this automatically.

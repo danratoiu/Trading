@@ -2,5 +2,5 @@
   "name": "trading-desk",
   "version": "0.1.0",
   "private": true,
-  "scripts": { "start": "node server.mjs" }
+  "scripts": { "start": "node server.mjs", "build": "node sync-styles.mjs" }
 }
