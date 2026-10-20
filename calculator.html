@@ -34,7 +34,7 @@
         <h2>Calculează un procent din sumă</h2>
         <label for="amount">Suma introdusă</label>
         <input class="amount-input" id="amount" type="text" inputmode="decimal" placeholder="Ex.: 10.000,50" aria-describedby="amount-hint storage-message" required>
-        <p class="muted" id="amount-hint">Punct pentru mii, virgulă pentru zecimale: 10.000,50.</p>
+        <p class="muted" id="amount-hint">Separator automat în timpul tastării: 1000 → 1.000, 100000 → 100.000. Folosește virgula pentru zecimale.</p>
         <label for="percentage">Procent: <output class="percent-value" id="percentage-label" for="percentage">1%</output></label>
         <input id="percentage" type="range" min="0" max="100" step="0.1" value="1">
         <div class="range-labels"><span>0%</span><span>50%</span><span>100%</span></div>
@@ -48,7 +48,7 @@
     </div>
     <p class="footer">Poți modifica suma oricând. Datele sunt păstrate doar în acest browser.</p>
   </main>
-  <script src="./sidebar.js"></script>
-  <script src="./calculator.js"></script>
+  <script src="./sidebar.js?v=d61037f6bbeb"></script>
+  <script src="./calculator.js?v=957d1f7cacdb"></script>
 </body>
 </html>
