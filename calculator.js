@@ -8,11 +8,32 @@ const format = new Intl.NumberFormat('ro-RO', { minimumFractionDigits: 2, maximu
 const percentFormat = new Intl.NumberFormat('ro-RO', { maximumFractionDigits: 1 });
 const amountKey = 'trading-desk-calculator-amount';
 const percentageKey = 'trading-desk-calculator-percentage';
+const amountFormat = new Intl.NumberFormat('ro-RO', { maximumFractionDigits: 2 });
+
+function formatAmountInput() {
+  const raw = amount.value.replaceAll('.', '');
+  if (!/^\d+(?:,\d{0,2})?$/.test(raw)) return;
+  const cursor = amount.selectionStart;
+  const beforeCursor = cursor === null ? null : amount.value.slice(0, cursor).replaceAll('.', '').length;
+  const [integer, decimals] = raw.split(',');
+  amount.value = integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + (decimals === undefined ? '' : `,${decimals}`);
+  if (beforeCursor !== null) {
+    let position = 0;
+    let characters = 0;
+    while (position < amount.value.length && characters < beforeCursor) {
+      if (amount.value[position] !== '.') characters++;
+      position++;
+    }
+    amount.setSelectionRange(position, position);
+  }
+}
 
 try {
   const savedAmount = localStorage.getItem(amountKey);
   const savedPercentage = localStorage.getItem(percentageKey);
-  if (savedAmount !== null) amount.value = savedAmount;
+  if (savedAmount !== null && savedAmount !== '' && Number.isFinite(Number(savedAmount))) {
+    amount.value = amountFormat.format(Number(savedAmount));
+  }
   if (savedPercentage !== null && Number.isFinite(Number(savedPercentage)) && Number(savedPercentage) >= 0 && Number(savedPercentage) <= 100) {
     percentage.value = savedPercentage;
   }
@@ -21,10 +42,12 @@ try {
 }
 
 function update(save = false) {
-  const value = Number(amount.value);
+  const raw = amount.value.replaceAll('.', '');
+  const value = Number(raw.replace(',', '.'));
   const percent = Number(percentage.value);
   percentageLabel.textContent = `${percentFormat.format(percent)}%`;
-  const valid = amount.value.trim() !== '' && Number.isFinite(value) && amount.validity.valid;
+  const valid = /^\d+(?:,\d{0,2})?$/.test(raw) && Number.isFinite(value) && value <= 1e12;
+  amount.setCustomValidity(valid || amount.value === '' ? '' : 'Introdu o sumă validă, de exemplu 10.000,50.');
   result.textContent = valid ? format.format(value * percent / 100) : '—';
   formula.textContent = valid
     ? `${format.format(value)} × ${percentFormat.format(percent)}%`
@@ -32,7 +55,7 @@ function update(save = false) {
   if (save) {
     try {
       // Preserve the last valid amount while the user is editing an invalid value.
-      if (valid || amount.value === '') localStorage.setItem(amountKey, amount.value);
+      if (valid || amount.value === '') localStorage.setItem(amountKey, valid ? String(value) : '');
       localStorage.setItem(percentageKey, percentage.value);
       storageMessage.textContent = valid || amount.value === ''
         ? 'Salvat automat în acest browser.'
@@ -43,7 +66,7 @@ function update(save = false) {
   }
 }
 
-amount.addEventListener('input', () => update(true));
+amount.addEventListener('input', () => { formatAmountInput(); update(true); });
 percentage.addEventListener('input', () => update(true));
 document.querySelector('#calculator-form').addEventListener('submit', event => event.preventDefault());
 update();
